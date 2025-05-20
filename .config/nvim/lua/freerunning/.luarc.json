@@ -1,5 +1,7 @@
 {
     "diagnostics.globals": [
-        "vim"
+        "vim",
+        "random_quote",
+        "VeryLazy"
     ]
 }
