@@ -5,8 +5,9 @@ return {
 		local conform = require("conform")
 		conform.setup({
 			formatters_by_ft = {
-				lua = { "stylua", "ast_grep" },
-				rust = { "rustfmt", "ast_grep" },
+				lua = { "stylua" },
+				rust = { "rustfmt", "ast-grep" },
+				markdown = { "mdformat" },
 			},
 			format_on_save = {
 				-- These options will be passed to conform.format()

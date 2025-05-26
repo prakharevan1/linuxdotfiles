@@ -2,8 +2,7 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
-SAVEHIST=1000
-bindkey -v
+SAVEHIST=1000 bindkey -v
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/evan/.zshrc'
@@ -40,7 +39,7 @@ function greet_user() {
   echo "Good $greeting, $name\n    It's $time on a magnificent $day!"
 }
 
-fastfetch
+fastfetch --color '#b3bbfa'
 greet_user
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -118,6 +117,11 @@ export PATH="/home/evan/.local/share/gem/ruby/3.4.0/bin:$PATH"
 export PATH="/home/evan/myenv/bin/python3:$PATH"
 # yazi
 export EDITOR="nvim"
+# debuggers
+export PATH="$PATH:/home/evan/Documents/programming_tools/codelldb/extension/adapter"
 
 
 . "/home/evan/.deno/env"
+
+# Created by `pipx` on 2025-05-24 20:06:41
+export PATH="$PATH:/home/evan/.local/bin"
