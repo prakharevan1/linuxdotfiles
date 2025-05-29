@@ -119,6 +119,8 @@ export PATH="/home/evan/myenv/bin/python3:$PATH"
 export EDITOR="nvim"
 # debuggers
 export PATH="$PATH:/home/evan/Documents/programming_tools/codelldb/extension/adapter"
+# asdf language manager
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 
 . "/home/evan/.deno/env"

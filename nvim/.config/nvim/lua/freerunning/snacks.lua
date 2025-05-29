@@ -51,6 +51,6 @@ return -- lazy.nvim
 			{ desc = "dim all other panes for focused programming." }
 		)
 		-- zen mode
-		vim.keymap.set({ "n", "v" }, "<leader>z", "<cmd>lua Snacks.zen()", { desc = "activate zen coding mode." })
+		vim.keymap.set({ "n", "v" }, "<leader>z", "<cmd>lua Snacks.zen()<CR>", { desc = "activate zen coding mode." })
 	end,
 }
