@@ -1,17 +1,11 @@
--- tabstops, QoL, etc.
-vim.cmd("set expandtab")
-vim.cmd("set tabstop=4")
-vim.cmd("set softtabstop=4")
-vim.cmd("set shiftwidth=4")
-vim.opt.termguicolors = true
--- Lazy load vim.version when required
-vim.cmd([[autocmd VimEnter * lua require('vim.version')]])
-
--- keybinding for leader
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
 -- clipboard
-vim.opt.clipboard:append("unnamedplus")
+vim.o.clipboard = 'unnamedplus'
 
--- auto save command with CTRL S
-vim.api.nvim_set_keymap("n", "<C-s>", ":w<CR>", {})
+-- tab spacing
+vim.o.expandtab = false
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
+vim.o.smartindent = true

@@ -1,0 +1,5 @@
+[tools]
+# julia = "latest"
+lua = "5.1"
+# python = "latest"
+# uncomment if you want em :)

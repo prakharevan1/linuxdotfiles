@@ -1,4 +1,4 @@
--- require vim opts
-require("config.vim_opts")
--- line nums
+-- Prepend mise shims to PATH
+vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
+
 require("config.line_nums")
