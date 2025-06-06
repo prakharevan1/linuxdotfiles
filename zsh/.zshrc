@@ -39,6 +39,7 @@ function greet_user() {
   echo "Good $greeting, $name\n    It's $time on a magnificent $day!"
 }
 
+
 fastfetch --color '#b3bbfa'
 greet_user
 
@@ -109,8 +110,6 @@ alias vim="nvim"
 
 # spicetify
 export PATH=$PATH:/home/evan/.spicetify
-# undertale
-export PATH="/home/evan/.wine/drive_c/GOG Games/Undertale/Undertale.exe:$PATH"
 # ruby
 export PATH="/home/evan/.local/share/gem/ruby/3.4.0/bin:$PATH"
 # python
@@ -119,11 +118,9 @@ export PATH="/home/evan/myenv/bin/python3:$PATH"
 export EDITOR="nvim"
 # debuggers
 export PATH="$PATH:/home/evan/Documents/programming_tools/codelldb/extension/adapter"
-# asdf language manager
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-
 
 . "/home/evan/.deno/env"
 
 # Created by `pipx` on 2025-05-24 20:06:41
 export PATH="$PATH:/home/evan/.local/bin"
+eval "$(~/.local/bin/mise activate zsh)"

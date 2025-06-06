@@ -1,11 +1,9 @@
-vim.cmd[[colorscheme tokyonight-moon]]
+vim.cmd([[colorscheme catppuccin-macchiato]])
 
--- transparency, commented out because built into tokyonight
---[[
-vim.cmd [[
+-- transparency
+vim.cmd([[
   highlight Normal guibg=none
   highlight NonText guibg=none
   highlight Normal ctermbg=none
   highlight NonText ctermbg=none
-]]
---]]
+]])

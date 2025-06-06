@@ -1,17 +1,17 @@
 return {
 	{
-		'nvim-tree/nvim-web-devicons',
---		opts = {},
-		event = 'VeryLazy'
+		"nvim-tree/nvim-web-devicons",
+		--		opts = {},
+		event = "VeryLazy",
 	},
-	{ "nvim-lua/plenary.nvim", lazy = true },
+	{ "nvim-lua/plenary.nvim", event = "VeryLazy" },
 	{
-		'stevearc/dressing.nvim',
+		"stevearc/dressing.nvim",
 		opts = {},
-		event='VeryLazy'
+		event = "VeryLazy",
 	},
 	{
 		"MunifTanjim/nui.nvim",
-		event = 'VeryLazy'
-	}
+		event = "VeryLazy",
+	},
 }
