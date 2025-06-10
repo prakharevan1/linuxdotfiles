@@ -14,29 +14,29 @@ compinit
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 function greet_user() {
-  # ANSI escape codes for blue and reset
-  local BLUE="\033[34m"
-  local RESET="\033[0m"
+	# ANSI escape codes for blue and reset
+	local BLUE="\033[34m"
+	local RESET="\033[0m"
 
-  # Set your name here
-  local name="${BLUE}evan${RESET}"
+	# Set your name here
+	local name="${BLUE}evan${RESET}"
 
-  # Get current hour (24-hour format)
-  local hour=$(date +"%H")
-  local time="${BLUE}$(date +"%I:%M %p")${RESET}"
-  local day="${BLUE}$(date +"%A")${RESET}"
+	# Get current hour (24-hour format)
+	local hour=$(date +"%H")
+	local time="${BLUE}$(date +"%I:%M %p")${RESET}"
+	local day="${BLUE}$(date +"%A")${RESET}"
 
-  # Determine greeting based on time
-  local greeting=""
-  if (( hour < 12 )); then
-    greeting="morning"
-  elif (( hour < 18 )); then
-    greeting="afternoon"
-  else
-    greeting="evening"
-  fi
+	# Determine greeting based on time
+	local greeting=""
+	if (( hour < 12 )); then
+		greeting="morning"
+	elif (( hour < 18 )); then
+		greeting="afternoon"
+	else
+		greeting="evening"
+	fi
 
-  echo "Good $greeting, $name\n    It's $time on a magnificent $day!"
+	echo "Good $greeting, $name\n    It's $time on a magnificent $day!"
 }
 
 
@@ -44,7 +44,7 @@ fastfetch --color '#b3bbfa'
 greet_user
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 
@@ -56,37 +56,60 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 ##? Clone a plugin, identify its init file, source it, and add it to your fpath.
 function plugin-load {
-  local repo plugdir initfile initfiles=()
-  : ${ZPLUGINDIR:=${ZDOTDIR:-~/.config/zsh}/plugins}
-  for repo in $@; do
-    plugdir=$ZPLUGINDIR/${repo:t}
-    initfile=$plugdir/${repo:t}.plugin.zsh
-    if [[ ! -d $plugdir ]]; then
-      echo "Cloning $repo..."
-      git clone -q --depth 1 --recursive --shallow-submodules \
-        https://github.com/$repo $plugdir
-    fi
-    if [[ ! -e $initfile ]]; then
-      initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
-      (( $#initfiles )) || { echo >&2 "No init file '$repo'." && continue }
-      ln -sf $initfiles[1] $initfile
-    fi
-    fpath+=$plugdir
-    (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
-  done
+	local repo plugdir initfile initfiles=()
+	: ${ZPLUGINDIR:=${ZDOTDIR:-~/.config/zsh}/plugins}
+	for repo in $@; do
+		plugdir=$ZPLUGINDIR/${repo:t}
+		initfile=$plugdir/${repo:t}.plugin.zsh
+		if [[ ! -d $plugdir ]]; then
+			echo "Cloning $repo..."
+			git clone -q --depth 1 --recursive --shallow-submodules \
+				https://github.com/$repo $plugdir
+		fi
+		if [[ ! -e $initfile ]]; then
+			initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
+			(( $#initfiles )) || { echo >&2 "No init file '$repo'." && continue }
+			ln -sf $initfiles[1] $initfile
+		fi
+		fpath+=$plugdir
+		(( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
+	done
 }
 
-# zsh defer = turbo speeds!
-plugin-load romkatv/zsh-defer # improves speed of plugins massively
+# zsh defer is bad for p10k, look at
+# https://github.com/romkatv/zsh-defer?tab=readme-ov-file#is-zsh-defer-compatible-with-instant-prompt-in-powerlevel10k
+# https://github.com/romkatv/zsh4humans/issues/8
 
-plugin-load zsh-users/zsh-syntax-highlighting
-plugin-load zsh-users/zsh-autosuggestions
-plugin-load zsh-users/zsh-completions
-plugin-load Junker/zsh-archlinux
-plugin-load jocelynmallon/zshmarks
+
+# plugin list
+#
+
+plugins=(
+	zsh-users/zsh-syntax-highlighting # we love syntax highlighting
+	zsh-users/zsh-autosuggestions # autosuggestions
+	zsh-users/zsh-completions # autocompletion
+	Junker/zsh-archlinux # yes, I use arch btw
+	jocelynmallon/zshmarks # bookmarks 
+	Aloxaf/fzf-tab # even better autocompletion which adds onto zsh autosuggestions
+)
+# load all the plugins
+plugin-load $plugins
+
+
+# compiling zsh = faster speeds, just slightly
+function plugin-compile {
+	ZPLUGINDIR=${ZPLUGINDIR:-$HOME/.config/zsh/plugins}
+	autoload -U zrecompile
+	local f
+	for f in $ZPLUGINDIR/**/*.zsh{,-theme}(N); do
+		zrecompile -pq "$f"
+	done
+}
 
 # zoxide
 eval "$(zoxide init zsh)"
+# mise
+eval "$(~/.local/bin/mise activate zsh)"
 
 # aliases
 
@@ -105,6 +128,8 @@ alias undertale="env WINEPREFIX=\"/home/evan/.wine\" wine \"/home/evan/.wine/dri
 alias cbonzai="cbonsai"
 # vim = nvim
 alias vim="nvim"
+# jjk = jj
+alias jjk=jj
 
 # path exports
 
@@ -118,9 +143,10 @@ export PATH="/home/evan/myenv/bin/python3:$PATH"
 export EDITOR="nvim"
 # debuggers
 export PATH="$PATH:/home/evan/Documents/programming_tools/codelldb/extension/adapter"
-
-. "/home/evan/.deno/env"
-
+# luarocks
+export PATH="$PATH:/home/evan/.local/share/mise/installs/lua/5.1/luarocks/bin/luarocks"
+# I use arch btw
+export PATH="$PATH:/home/evan/Documents/programming_tools/i-use-arch-btw/build/cmd/i-use-arch-btw"
+export PATH="$PATH:/home/evan/Documents/programming_tools/i-use-arch-btw/build/cmd/i-use-arch-btw-0.1"
 # Created by `pipx` on 2025-05-24 20:06:41
 export PATH="$PATH:/home/evan/.local/bin"
-eval "$(~/.local/bin/mise activate zsh)"

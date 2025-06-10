@@ -18,8 +18,8 @@ config.color_scheme = "catppuccin-macchiato"
 config.enable_wayland = false -- hyprland support
 
 config.font = wezterm.font_with_fallback({
---	{ family = "DepartureMono Nerd Font Mono", scale = 1.0},
---	{ family = "BigBlueTermPlus Nerd Font Propo", scale = 1.0},
+	--	{ family = "DepartureMono Nerd Font Mono", scale = 1.0},
+	--	{ family = "BigBlueTermPlus Nerd Font Propo", scale = 1.0},
 	{ family = "FiraCode Nerd Font", scale = 1.0 },
 	{ family = "Hack Nerd Font", scale = 1.0 },
 })
@@ -37,7 +37,7 @@ wezterm.on("gui-startup", function(window)
 	gui_window:maximize()
 end)
 
-config.window_background_opacity = 0.9
+config.window_background_opacity = 0.7
 config.macos_window_background_blur = 100
 config.window_decorations = "RESIZE"
 config.scrollback_lines = 3000
@@ -74,7 +74,7 @@ config.keys = {
 		action = wezterm.action_callback(function(window, _)
 			local overrides = window:get_config_overrides() or {}
 			if overrides.window_background_opacity == 1.0 then
-				overrides.window_background_opacity = 0.9
+				overrides.window_background_opacity = 0.7
 			else
 				overrides.window_background_opacity = 1.0
 			end
