@@ -1,4 +1,3 @@
-
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -130,6 +129,8 @@ alias cbonzai="cbonsai"
 alias vim="nvim"
 # jjk = jj
 alias jjk=jj
+# trash-cli
+alias rm=trash-put
 
 # path exports
 
