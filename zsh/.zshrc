@@ -13,10 +13,7 @@
 #input_lag_ms=11.016
 #exit_time_ms=74.209
 
-# zoxide
-eval "$(zoxide init zsh)"
-# mise
-eval "$(~/.local/bin/mise activate zsh)"
+
 
 function zcompile-many() {
   local f
@@ -69,6 +66,14 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Enable the "new" completion system (compsys).
+
+# fzf tab customization
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'colorls -1 --color=always $realpath'
+# tmux for fzf tab
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:*' fzf-flags --style minimal
+
+# compinit + recompile the z comp dump into wordcode
 autoload -Uz compinit && compinit
 [[ ~/.zcompdump.zwc -nt ~/.zcompdump ]] || zcompile-many ~/.zcompdump
 unfunction zcompile-many
@@ -76,7 +81,6 @@ unfunction zcompile-many
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 
 # Load plugins.
-
 source ~/fzf-tab/fzf-tab.plugin.zsh
 source ~/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source ~/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -103,6 +107,7 @@ alias ls=colorls
 # following in the steps of ubuntu + its memory safe,
 alias sudo=sudo-rs
 alias su=su-rs
+alias fzf=fzf --style minimal
 
 # path exports
 
@@ -123,3 +128,22 @@ export PATH="$PATH:/home/evan/Documents/programming_tools/i-use-arch-btw/build/c
 export PATH="$PATH:/home/evan/Documents/programming_tools/i-use-arch-btw/build/cmd/i-use-arch-btw-0.1"
 # Created by `pipx` on 2025-05-24 20:06:41
 export PATH="$PATH:/home/evan/.local/bin"
+
+# zoxide
+eval "$(zoxide init zsh)"
+# mise
+eval "$(~/.local/bin/mise activate zsh)"
+
+# HISTORY
+HISTSIZE=2000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+# erase all duplicates
+HISTDUP=erase
+setopt appendhistory # append rather than overwrite
+setopt sharehistory # share history across panes
+setopt hist_ignore_space # use space to prevent sensitive info from being shared
+# we dont want duplicates in the file
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
