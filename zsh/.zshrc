@@ -54,17 +54,14 @@ if [[ ! -e ~/fzf-tab ]]; then
   git clone --depth=1 https://github.com/Aloxaf/fzf-tab.git ~/fzf-tab
   zcompile-many ~/fzf-tab/fzf-tab.plugin.zsh
 fi
-# greeting
 
-cat << EOF
-$(print -P '%{\e[38;2;198;160;246m%}')
-                _     _     _            
-  __ _ _ __ ___| |__ | |__ | |___      __
- / _\` | '__/ __| '_ \\| '_ \\| __\\ \\ /\\ / /
-| (_| | | | (__| | | | |_) | |_ \\ V  V / 
- \\__,_|_|  \\___|_| |_|_.__/ \\__| \\_/\\_/  
-$(print -P '%{\e[0m%}')
-EOF
+# greeting, my custom plugin I generated with AI lol
+if [[ ! -e ~/greeting ]]; then
+  git clone --depth=1 https://github.com/prakharevan1/zsh-greeting.git ~/greeting
+  zcompile-many ~/greeting/greeting.zsh.zsh
+fi
+
+source ~/greeting/greeting.zsh # I need to load it before p10k as it does print output
 
 # Activate Powerlevel10k Instant Prompt.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
