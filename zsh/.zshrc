@@ -1,123 +1,93 @@
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000 bindkey -v
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/home/evan/.zshrc'
-
-autoload -Uz compinit
-compinit
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-function greet_user() {
-	# ANSI escape codes for blue and reset
-	local BLUE="\033[34m"
-	local RESET="\033[0m"
-
-	# Set your name here
-	local name="${BLUE}evan${RESET}"
-
-	# Get current hour (24-hour format)
-	local hour=$(date +"%H")
-	local time="${BLUE}$(date +"%I:%M %p")${RESET}"
-	local day="${BLUE}$(date +"%A")${RESET}"
-
-	# Determine greeting based on time
-	local greeting=""
-	if (( hour < 12 )); then
-		greeting="morning"
-	elif (( hour < 18 )); then
-		greeting="afternoon"
-	else
-		greeting="evening"
-	fi
-
-	echo "Good $greeting, $name\n    It's $time on a magnificent $day!"
-}
-
-
-fastfetch --color '#b3bbfa'
-greet_user
-
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-source ~/powerlevel10k/powerlevel10k.zsh-theme
-
-# I hate plugin managers, so I use this; a 20 line plugin *installer*, and since its only 20 lines = peak perf
-
-##? Clone a plugin, identify its init file, source it, and add it to your fpath.
-function plugin-load {
-	local repo plugdir initfile initfiles=()
-	: ${ZPLUGINDIR:=${ZDOTDIR:-~/.config/zsh}/plugins}
-	for repo in $@; do
-		plugdir=$ZPLUGINDIR/${repo:t}
-		initfile=$plugdir/${repo:t}.plugin.zsh
-		if [[ ! -d $plugdir ]]; then
-			echo "Cloning $repo..."
-			git clone -q --depth 1 --recursive --shallow-submodules \
-				https://github.com/$repo $plugdir
-		fi
-		if [[ ! -e $initfile ]]; then
-			initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
-			(( $#initfiles )) || { echo >&2 "No init file '$repo'." && continue }
-			ln -sf $initfiles[1] $initfile
-		fi
-		fpath+=$plugdir
-		(( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
-	done
-}
-
-# zsh defer is bad for p10k, look at
-# https://github.com/romkatv/zsh-defer?tab=readme-ov-file#is-zsh-defer-compatible-with-instant-prompt-in-powerlevel10k
-# https://github.com/romkatv/zsh4humans/issues/8
-
-
-# plugin list
-#
-
-plugins=(
-	zsh-users/zsh-syntax-highlighting # we love syntax highlighting
-	zsh-users/zsh-autosuggestions # autosuggestions
-	zsh-users/zsh-completions # autocompletion
-	Junker/zsh-archlinux # yes, I use arch btw
-	jocelynmallon/zshmarks # bookmarks 
-	Aloxaf/fzf-tab # even better autocompletion which adds onto zsh autosuggestions
-)
-# load all the plugins
-plugin-load $plugins
-
-
-# compiling zsh = faster speeds, just slightly
-function plugin-compile {
-	ZPLUGINDIR=${ZPLUGINDIR:-$HOME/.config/zsh/plugins}
-	autoload -U zrecompile
-	local f
-	for f in $ZPLUGINDIR/**/*.zsh{,-theme}(N); do
-		zrecompile -pq "$f"
-	done
-}
+# Hello! My zsh config is heavily based on the zsh-bench diy++, with my own plugins;
+# I didnt use zsh4humans because I want it to be simple (this entire config excluding comments is <50 lines) and I want to know
+# exactly what my code is doing. 
+# The stats (with bloat in background and on mid pc):
+#creates_tty=0
+#has_compsys=1
+#has_syntax_highlighting=1
+#has_autosuggestions=1
+#has_git_prompt=0
+#first_prompt_lag_ms=42.797
+#first_command_lag_ms=134.465
+#command_lag_ms=17.807
+#input_lag_ms=11.016
+#exit_time_ms=74.209
 
 # zoxide
 eval "$(zoxide init zsh)"
 # mise
 eval "$(~/.local/bin/mise activate zsh)"
 
-# aliases
+function zcompile-many() {
+  local f
+  for f; do zcompile -R -- "$f".zwc "$f"; done
+}
 
-# zsh marks
-alias g="jump"
-alias s="bookmark"
-alias d="deletemark"
-alias p="showmarks"
-alias l="showmarks"
+# Clone and compile to wordcode missing plugins.
+
+# faster syntax highlighting
+if [[ ! -e ~/fast-syntax-highlighting ]]; then
+  git clone --depth=1 https://github.com/zdharma-continuum/fast-syntax-highlighting.git ~/fast-syntax-highlighting
+  zcompile-many ~/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+fi
+
+# zsh autosuggestions like fish shell
+if [[ ! -e ~/zsh-autosuggestions ]]; then
+  git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git ~/zsh-autosuggestions
+  zcompile-many ~/zsh-autosuggestions/{zsh-autosuggestions.zsh,src/**/*.zsh}
+fi
+
+# p10k instant prompt, good for perf
+if [[ ! -e ~/powerlevel10k ]]; then
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+  make -C ~/powerlevel10k pkg
+fi
+
+# extra zsh completions
+if [[ ! -e ~/zsh-completions ]]; then
+  git clone --depth=1 https://github.com/zsh-users/zsh-completions.git ~/zsh-completions
+  zcompile-many ~/zsh-completions/zsh-completions.plugin.zsh
+fi
+
+# fzf tab
+if [[ ! -e ~/fzf-tab ]]; then
+  git clone --depth=1 https://github.com/Aloxaf/fzf-tab.git ~/fzf-tab
+  zcompile-many ~/fzf-tab/fzf-tab.plugin.zsh
+fi
+# greeting
+
+cat << EOF
+$(print -P '%{\e[38;2;198;160;246m%}')
+                _     _     _            
+  __ _ _ __ ___| |__ | |__ | |___      __
+ / _\` | '__/ __| '_ \\| '_ \\| __\\ \\ /\\ / /
+| (_| | | | (__| | | | |_) | |_ \\ V  V / 
+ \\__,_|_|  \\___|_| |_|_.__/ \\__| \\_/\\_/  
+$(print -P '%{\e[0m%}')
+EOF
+
+# Activate Powerlevel10k Instant Prompt.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Enable the "new" completion system (compsys).
+autoload -Uz compinit && compinit
+[[ ~/.zcompdump.zwc -nt ~/.zcompdump ]] || zcompile-many ~/.zcompdump
+unfunction zcompile-many
+
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
+# Load plugins.
+
+source ~/fzf-tab/fzf-tab.plugin.zsh
+source ~/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source ~/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/zsh-completions/zsh-completions.plugin.zsh
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.p10k.zsh
+
+# alias's
 
 alias fastfetch="fastfetch --color '#b3bbfa'"
 # this is just funny
@@ -131,6 +101,8 @@ alias vim="nvim"
 alias jjk=jj
 # trash-cli
 alias rm=trash-put
+# color ls
+alias ls=colorls
 
 # path exports
 
