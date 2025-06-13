@@ -54,8 +54,8 @@ fi
 
 # greeting, my custom plugin I generated with AI lol
 if [[ ! -e ~/greeting ]]; then
-  git clone --depth=1 https://github.com/prakharevan1/zsh-greeting.git ~/greeting
-  zcompile-many ~/greeting/greeting.zsh.zsh
+  git clone --depth=1 git@github.com:prakharevan1/zsh-greeting.git ~/greeting
+  zcompile-many ~/greeting/greeting.zsh
 fi
 
 source ~/greeting/greeting.zsh # I need to load it before p10k as it does print output
