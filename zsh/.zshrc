@@ -107,6 +107,7 @@ alias ls=colorls
 # following in the steps of ubuntu + its memory safe,
 alias sudo=sudo-rs
 alias su=su-rs
+# fzf
 alias fzf=fzf --style minimal
 
 # path exports
