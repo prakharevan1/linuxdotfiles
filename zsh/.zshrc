@@ -103,12 +103,14 @@ alias jjk=jj
 # trash-cli
 alias rm=trash-put
 # color ls
-alias ls=colorls
+alias ls=lsd
 # following in the steps of ubuntu + its memory safe,
 alias sudo=sudo-rs
 alias su=su-rs
 # fzf
 alias fzf=fzf --style minimal
+# zoxide
+alias cd=z
 
 # path exports
 
