@@ -1,9 +1,10 @@
 require("nvim-treesitter.configs").setup({
-	ensure_installed = { "rust", "java", "toml", "markdown", "markdown_inline", "lua" },
+	ensure_installed = { "rust", "java", "lua", "markdown", "markdown_inline", "toml", "tmux", "vim", "vimdoc" },
+	sync_install = true,
 	auto_install = true,
-	sync_install = false,
 	highlight = {
 		enable = true,
-		disable = { "tmux" }, -- for some reason its weird with tmux
+		disable = { "tmux" }, -- treesitter is weird on tmux highlight
 	},
+	additional_vim_regex_highlighting = false,
 })

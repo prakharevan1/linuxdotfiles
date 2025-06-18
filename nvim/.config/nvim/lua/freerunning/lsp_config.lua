@@ -5,32 +5,38 @@ return {
 	},
 	{
 		"mason-org/mason-lspconfig.nvim",
-		opts = {},
+		opts = {
+			ensure_installed = { "lua_ls", "rust_analyzer" },
+			automatic_enable = {
+				exclude = {
+					"jdtls",
+					"rust_analyzer", -- we have configured these both
+				},
+			},
+		},
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },
-			"neovim/nvim-lspconfig",
+			--			"neovim/nvim-lspconfig",
+		},
+	},
+	{
+		"folke/lazydev.nvim", -- extra completion for lua files
+		ft = "lua", -- only load on lua files
+		opts = {
+			library = {
+				-- See the configuration section for more details
+				-- Load luvit types when the `vim.uv` word is found
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				{ "nvim-dap-ui" },
+			},
 		},
 	},
 	{
 		"neovim/nvim-lspconfig",
-		dependencies = {
-			{
-				"folke/lazydev.nvim",
-				ft = "lua", -- only load on lua files
-				opts = {
-					library = {
-						-- See the configuration section for more details
-						-- Load luvit types when the `vim.uv` word is found
-						{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
-					},
-				},
-			},
-		},
+		priority = 1000, -- lsp is very important, prob more than the other plugins
+		dependencies = { "saghen/blink.cmp" },
 		config = function()
-			-- auto enable called by mason-lsp config, install by mason, so we dont need that
-
-			-- capabilities support for servers, more completion
-
+			-- we need to set up blink cmp capabilities
 			---@diagnostic disable-next-line: lowercase-global
 			function blink_cmp(server_name)
 				local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -38,13 +44,11 @@ return {
 					capabilities = capabilities,
 				})
 			end
-			-- calling the function
-			blink_cmp("lua_ls")
-			blink_cmp("rust_analyzer")
-			blink_cmp("marksman") -- marksman
-			blink_cmp("jdtls") -- java lsp
-
-			-- visual stuff
+			-- btw, for future me, the keybind "grn" in normal mode on top of a variable/function renames it everywhere :)
+			-- calling it for each lsp
+			blink_cmp("rust_analyzer") -- rust
+			blink_cmp("lua_ls") -- lua
+			blink_cmp("jdtls") -- java, the hardest one to set up by FAR
 
 			-- virtual line diagnostics, brief and concise (I found it on reddit lol)
 			vim.diagnostic.config({
@@ -60,13 +64,6 @@ return {
 			})
 
 			-- logos
-			-- [[
-			--vim.fn.sign_define("DiagnosticSignError", { text = "", texthl = "DiagnosticSignError" })
-			--	vim.fn.sign_define("DiagnosticSignWarn", { text = "", texthl = "DiagnosticSignWarn" })
-			--			vim.fn.sign_define("DiagnosticSignInfo", { text = "", texthl = "DiagnosticSignInfo" })
-			--			vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
-			-- ]]
-
 			vim.diagnostic.config({
 				signs = {
 					text = {

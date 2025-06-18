@@ -1,11 +1,12 @@
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+--qol tab spacing
+vim.o.tabstop = 4 -- A TAB character looks like 4 spaces
+vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
+vim.o.softtabstop = 4 -- Number of spaces inserted instead of a TAB character
+vim.o.shiftwidth = 4 -- Number of spaces inserted when indenting
 
--- clipboard
-vim.o.clipboard = 'unnamedplus'
+-- very helpful, the undo file, its in the name
+vim.opt.undofile = true
 
--- tab spacing
-vim.o.expandtab = false
-vim.o.shiftwidth = 4
-vim.o.tabstop = 4
-vim.o.smartindent = true
+require("config.clipboard") -- then my clipboard
+require("config.line_nums") -- line numbers
+require("config.hide_status") -- hide status bar for tmux

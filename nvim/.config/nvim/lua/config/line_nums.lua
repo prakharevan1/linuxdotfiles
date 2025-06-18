@@ -6,9 +6,9 @@ vim.opt.cursorline = true
 
 -- line number colors
 function LineNumberColors()
-    vim.api.nvim_set_hl(0, 'LineNrAbove', { fg='#4fd6be', bold=true })
---    vim.api.nvim_set_hl(0, 'LineNr', { fg='white', bold=false }) auto set to orange by cursorline
-    vim.api.nvim_set_hl(0, 'LineNrBelow', { fg='#ff757f', bold=true })
+    vim.api.nvim_set_hl(0, 'LineNrAbove', { fg='#8aadf4', bold=true })
+    vim.api.nvim_set_hl(0, 'LineNr', { fg='#ed8796', bold=false })
+    vim.api.nvim_set_hl(0, 'LineNrBelow', { fg='#c6a0f6', bold=true })
 
 end
 

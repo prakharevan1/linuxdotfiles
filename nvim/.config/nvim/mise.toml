@@ -1,4 +1,5 @@
 [tools]
+java = "latest"
 # julia = "latest"
 lua = "5.1"
 # python = "latest"
