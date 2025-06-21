@@ -4,9 +4,19 @@ return {
 		opts = {},
 	},
 	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		opts = {
+			ensure_installed = {
+				"java-debug-adapter",
+				"java-test",
+			},
+		},
+	},
+
+	{
 		"mason-org/mason-lspconfig.nvim",
 		opts = {
-			ensure_installed = { "lua_ls", "rust_analyzer" },
+			ensure_installed = { "lua_ls", "rust_analyzer", "jdtls" },
 			automatic_enable = {
 				exclude = {
 					"jdtls",

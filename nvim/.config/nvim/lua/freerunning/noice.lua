@@ -9,6 +9,10 @@ return {
 					any = {
 						{ event = "notify", find = "NotifyBackground" },
 						{ event = "notify", find = "Terminal exited with code" },
+						{ event = "notify", find = "Error executing vim.schedule" },
+						{ event = "notify", find = "Invalid buffer id" },
+						{ event = "msg_show", find = "Invalid buffer id" },
+						{ event = "msg_show", find = "nvim_buf_get_name" },
 					},
 				},
 				opts = { skip = true },
