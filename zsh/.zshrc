@@ -131,6 +131,8 @@ export PATH="$PATH:/home/evan/Documents/programming_tools/i-use-arch-btw/build/c
 export PATH="$PATH:/home/evan/Documents/programming_tools/i-use-arch-btw/build/cmd/i-use-arch-btw-0.1"
 # my custom update script
 export PATH="$PATH:/home/evan/.config/zsh/"
+# I need bluej for my ap csa course (bruh)
+export PATH="$PATH:/home/evan/Documents/programming_tools/bluej"
 # Created by `pipx` on 2025-05-24 20:06:41
 export PATH="$PATH:/home/evan/.local/bin"
 
