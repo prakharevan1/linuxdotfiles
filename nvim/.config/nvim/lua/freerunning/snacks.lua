@@ -43,5 +43,6 @@ return {
 		image = {},
 		input = {},
 		quickfile = {},
+		indent = {},
 	},
 }

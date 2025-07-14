@@ -46,7 +46,7 @@ return {
 		priority = 1000, -- lsp is very important, prob more than the other plugins
 		dependencies = { "saghen/blink.cmp" },
 		config = function()
-			-- we need to set up blink cmp capabilities
+			-- We need to set up blink cmp capabilities
 			---@diagnostic disable-next-line: lowercase-global
 			function blink_cmp(server_name)
 				local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -54,13 +54,15 @@ return {
 					capabilities = capabilities,
 				})
 			end
-			-- btw, for future me, the keybind "grn" in normal mode on top of a variable/function renames it everywhere :)
+			-- By the way, for future me, the keybind "grn" in normal mode on top of a variable/function renames it everywhere :)
 			-- calling it for each lsp
 			blink_cmp("rust_analyzer") -- rust
 			blink_cmp("lua_ls") -- lua
 			blink_cmp("jdtls") -- java, the hardest one to set up by FAR
+			blink_cmp("marksman") -- markdown
+			blink_cmp("harper_ls") -- markdown grammar checker
 
-			-- virtual line diagnostics, brief and concise (I found it on reddit lol)
+			-- Virtual line diagnostics, brief and concise (I found it on Reddit loll)
 			vim.diagnostic.config({
 				virtual_text = {
 					severity = { min = vim.diagnostic.severity.WARN },

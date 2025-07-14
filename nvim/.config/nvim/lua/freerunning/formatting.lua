@@ -24,6 +24,7 @@ return {
 			java = {
 				"clang-format", --"google-java-format"
 			},
+			markdown = { "markdownlint" },
 		},
 		-- Set default options
 		default_format_opts = {

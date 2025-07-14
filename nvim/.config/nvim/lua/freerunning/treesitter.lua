@@ -1,1 +1,7 @@
-return {"nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate"}
+return {
+	"nvim-treesitter/nvim-treesitter",
+	dependencies = { "OXY2DEV/markview.nvim" },
+	branch = "master",
+	lazy = false,
+	build = ":TSUpdate",
+}

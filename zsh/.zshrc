@@ -52,13 +52,16 @@ if [[ ! -e ~/.config/zsh/plugins/fzf-tab ]]; then
   zcompile-many ~/.config/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 fi
 
-# greeting, my custom plugin I generated with AI lol
-if [[ ! -e ~/.config/zsh/plugins/greeting ]]; then
-  git clone --depth=1 git@github.com:prakharevan1/zsh-greeting.git ~/.config/zsh/plugins/greeting # private so it needs a ssh, maybe later ill public it lol
-  zcompile-many ~/.config/zsh/plugins/greeting/greeting.zsh
-fi
+# greeting, my custom plugin I generated with AI lol, though now I just fastfetch so
+# if [[ ! -e ~/.config/zsh/plugins/greeting ]]; then
+#  git clone --depth=1 git@github.com:prakharevan1/zsh-greeting.git ~/.config/zsh/plugins/greeting # private so it needs a ssh, maybe later ill public it lol
+# zcompile-many ~/.config/zsh/plugins/greeting/greeting.zsh
+# fi
 
-source ~/.config/zsh/plugins/greeting/greeting.zsh # I need to load it before p10k as it does print output
+# source ~/.config/zsh/plugins/greeting/greeting.zsh # I need to load it before p10k as it does print output, though now I just do this
+# fastfetch, but I first clear the screen :D
+clear
+fastfetch
 
 # Activate Powerlevel10k Instant Prompt.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -96,8 +99,9 @@ alias whoareyou="echo linux, arch linux"
 # undertale
 alias undertale="env WINEPREFIX=\"/home/evan/.wine\" wine \"/home/evan/.wine/drive_c/GOG Games/Undertale/UNDERTALE.exe\""
 alias cbonzai="cbonsai"
-# vim = nvim
+# vim = nvim, and vi = nvim
 alias vim="nvim"
+alias vi="nvim"
 # jjk = jj
 alias jjk=jj
 # trash-cli
@@ -105,12 +109,22 @@ alias rm=trash-put
 # color ls
 alias ls=lsd
 # following in the steps of ubuntu + its memory safe,
-alias sudo=sudo-rs
+alias sudo="echo looking for doas\?"
 alias su=su-rs
 # fzf
 alias fzf=fzf --style minimal
 # zoxide
 alias cd=z
+# update
+alias update='sudo pacman -Syu'
+# blackjack tui
+alias blackjack='/home/evan/Downloads/programs/blackjack/target/release/blackjack'
+# wtf is command, cant seem to find its install so
+alias wtf=man
+# betterdiscord
+alias betterdiscord=betterdiscordctl
+# alias killorphans :D
+alias 'killorphans'='doas pacman -Rns $(pacman -Qdtq)'
 
 # path exports
 
@@ -118,6 +132,8 @@ alias cd=z
 export PATH=$PATH:/home/evan/.spicetify
 # ruby
 export PATH="/home/evan/.local/share/gem/ruby/3.4.0/bin:$PATH"
+# rust
+export PATH="$PATH:/home/evan/.cargo/bin"
 # python
 export PATH="/home/evan/myenv/bin/python3:$PATH"
 # yazi
@@ -129,6 +145,8 @@ export PATH="$PATH:/home/evan/.local/share/mise/installs/lua/5.1/luarocks/bin/lu
 # I use arch btw
 export PATH="$PATH:/home/evan/Documents/programming_tools/i-use-arch-btw/build/cmd/i-use-arch-btw"
 export PATH="$PATH:/home/evan/Documents/programming_tools/i-use-arch-btw/build/cmd/i-use-arch-btw-0.1"
+# random appimages
+export PATH="$PATH:/home/evan/Downloads/appimages"
 # my custom update script
 export PATH="$PATH:/home/evan/.config/zsh/"
 # I need bluej for my ap csa course (bruh)
@@ -154,3 +172,5 @@ setopt hist_ignore_space # use space to prevent sensitive info from being shared
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_ignore_dups
+# allow for comments 
+setopt interactivecomments

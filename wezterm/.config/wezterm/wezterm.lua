@@ -3,10 +3,12 @@ local act = wezterm.action
 
 local config = {}
 -- rendering
-config.front_end = "OpenGL"
-config.max_fps = 144
+config.front_end = "WebGpu"
+config.webgpu_power_preference = "HighPerformance"
+config.max_fps = 500
+config.enable_kitty_graphics = true
 config.default_cursor_style = "BlinkingBlock"
-config.animation_fps = 1
+config.animation_fps = 500
 config.cursor_blink_rate = 500
 config.term = "xterm-256color"
 -- Use config builder if possible
@@ -18,20 +20,32 @@ config.color_scheme = "catppuccin-macchiato"
 config.enable_wayland = false -- hyprland support
 
 config.font = wezterm.font_with_fallback({
+	--{ family = "GohuFont 11 Nerd Font", scale = 1.15 },
 	--	{ family = "DepartureMono Nerd Font Mono", scale = 1.0},
 	--	{ family = "BigBlueTermPlus Nerd Font Propo", scale = 1.0},
-	{ family = "FiraCode Nerd Font", scale = 1.0 },
+	--	{ family = "FiraCode Nerd Font", scale = 1.0 },
+
 	{ family = "Hack Nerd Font", scale = 1.0 },
 })
+
+-- victormono for italics specifically
+
 -- auto fullscreen
 local mux = wezterm.mux
 
+config.font_rules = {
+	{
+		italic = true,
+		font = wezterm.font("VictorMono Nerd Font", { italic = true, bold = true }),
+	},
+}
 config.foreground_text_hsb = {
 	hue = 1.0,
 	saturation = 1.2,
 	brightness = 1.1, --bright background, I need to read the text
 }
 wezterm.on("gui-startup", function(window)
+	---@diagnostic disable-next-line: unused-local, undefined-global, redefined-local
 	local tab, pane, window = mux.spawn_window(cmd or {})
 	local gui_window = window:gui_window()
 	gui_window:maximize()
@@ -115,7 +129,7 @@ wezterm.on("update-right-status", function(window, _)
 	local prefix = ""
 
 	if window:leader_is_active() then
-		prefix = " " .. utf8.char(0x003C) .. utf8.char(0x002F) .. utf8.char(0x003E) -- </> in Unicod
+		prefix = " " .. utf8.char(0x003C) .. utf8.char(0x002F) .. utf8.char(0x003E) -- </> in Unicode
 		ARROW_FOREGROUND = { Foreground = { Color = "#0da636" } }
 		SOLID_LEFT_ARROW = utf8.char(0xe0b2)
 	end

@@ -1,1 +1,1 @@
-vim.cmd("set laststatus=0")
+--vim.cmd("set laststatus=0") I mean I kinda need it for macros so for now it exists for nothing
